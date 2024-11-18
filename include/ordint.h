@@ -1,5 +1,16 @@
+#ifndef ORD_INT_H
+#define ORD_INT_H
+
+#include <stdio.h>
+#include <stdlib.h>
+
 typedef struct OrdInd{
-// a definir
+    int num_linhas;
+    int num_colunas;
+    //vai armazenar os primeiros dados (nome,cpf,endereço)
+    char* Nomes;
+    char* CPFs;
+    char* Ends;
 } OrdInd_t, *OrdInd_ptr;
 
 // Exemplos de funcoes
@@ -13,3 +24,5 @@ int OrdenaIndice_QuickSort(OrdInd_ptr poi, int atribid);
 int OrdenaIndice_InsertionSort(OrdInd_ptr poi, int atribuid);
 int OrdenaIndice_MergeSort(OrdInd_ptr poi, int atribuid);
 int ImprimeOrdenadoIndice (OrdInd_ptr poi, int atribid);
+
+#endif
