@@ -1,5 +1,7 @@
 {
     "files.associations": {
-        "ordint.h": "c"
+        "ordint.h": "c",
+        "excecoes.h": "c",
+        "stdio.h": "c"
     }
 }
