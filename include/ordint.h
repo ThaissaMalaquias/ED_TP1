@@ -3,7 +3,6 @@
 
 #include <stdio.h>
 #include <stdlib.h>
-//a biblioteca string é usada p/ manipulacao de arquivos.
 #include <string.h>
 
 typedef struct OrdInd{
@@ -27,9 +26,11 @@ int CarregaArquivo(OrdInd_ptr poi, char * nomeentrada);
 int NumAtributos(OrdInd_ptr poi);
 char* NomeAtributo(OrdInd_ptr poi, int pos, char * nome);
 int CriaIndice (OrdInd_ptr poi, int atribid);
+int Comparacao_Elementos(OrdInd_ptr poi, int thanku, int next, int atribid);
+int Particao_QS(int esq, int dir, OrdInd_ptr poi, int atribid);
 int OrdenaIndice_QuickSort(OrdInd_ptr poi, int atribid);
-int OrdenaIndice_InsertionSort(OrdInd_ptr poi, int atribuid);
-int OrdenaIndice_MergeSort(OrdInd_ptr poi, int atribuid);
+int OrdenaIndice_InsertionSort(OrdInd_ptr poi, int atribid);
+int OrdenaIndice_MergeSort(OrdInd_ptr poi, int atribid);
 int ImprimeOrdenadoIndice (OrdInd_ptr poi, int atribid);
 
 #endif;

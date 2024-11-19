@@ -144,16 +144,82 @@ int CriaIndice (OrdInd_ptr poi, int atribid){
     }
 };
 
+int Comparacao_Elementos(OrdInd_ptr poi, int thanku, int next, int atribid){
+
+    checar_atributo(atribid);
+
+    switch (atribid)
+    {
+    case 0:
+        return strcmp(poi->Nomes[thanku], poi->Nomes[next]);
+        break;
+    case 1:
+        return poi->CPFs[thanku] - poi->CPFs[next];
+        break;
+    case 2:
+        return strcmp(poi->Ends[thanku], poi->Ends[next]);
+        break;
+    default:
+        break;
+    }
+};
+
+int Particao_QS(int esq, int dir, OrdInd_ptr poi, int atribid){
+    //indices relacionados ao atributo especifico.
+    int* inds_espec = poi->Indices[atribid];
+    //elemento do meio é o pivo.
+    int pivo = inds_espec[(esq+dir)/2];
+    int i = esq;
+    int j = dir;
+
+    int aux = 0;
+
+    while(i <= j){
+        //
+        while(Comparacao_Elementos(poi, inds_espec[i], pivo, atribid) < 0) i++;
+        while(Comparacao_Elementos(poi, inds_espec[j], pivo, atribid) > 0) j--;
+
+        //quando uma troca é necessária
+        if(i <= j){
+            aux = inds_espec[i];
+            inds_espec[i] = inds_espec[j];
+            inds_espec[j] = aux;
+            i++;
+            j--;
+        }
+    }
+
+    //ponto de particao é retornado.
+    return i;
+
+};
+
+int QuickSort_rec(OrdInd_ptr poi, int esq, int dir, int atribid){
+    if(esq < dir){
+        //particiona e retorna o indice de separacao.
+        int meio = Particao_QS(esq,dir,poi,atribid);
+
+        //Ordana recursivamente as metades.
+        QuickSort_rec(poi, esq, meio-1, atribid);
+        QuickSort_rec(poi,meio,dir,atribid);
+    }
+};
+
 int OrdenaIndice_QuickSort(OrdInd_ptr poi, int atribid){
+    checar_alocacao(poi->Indices, "Vetor de Indices para cada atributo nao alocado.");
+    checar_alocacao(poi->Indices[atribid], "Vetor de Indices para atributo especifico nao alocado.");
 
-};
-
-int OrdenaIndice_InsertionSort(OrdInd_ptr poi, int atribuid){
-
-};
-
-int OrdenaIndice_MergeSort(OrdInd_ptr poi, int atribuid){
+    QuickSort_rec(poi, 0, poi->num_linhas-1, atribid);
     
+    return 0;
+};
+
+int OrdenaIndice_InsertionSort(OrdInd_ptr poi, int atribid){
+
+};
+
+int OrdenaIndice_MergeSort(OrdInd_ptr poi, int atribid){
+
 };
 
 int ImprimeOrdenadoIndice (OrdInd_ptr poi, int atribid){

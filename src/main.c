@@ -1,7 +1,7 @@
 #include "../include/ordint.h"
 
 int main(){
-    OrdInd_ptr ord_main;
+    /*OrdInd_ptr ord_main;
 
     ord_main = Cria();
 
@@ -16,4 +16,5 @@ int main(){
     printf("\nnumero de colunas: %d \n", ord_main->num_colunas);
 
     Destroi(ord_main);
+    */
 }

@@ -21,3 +21,9 @@ void checar_posicao(int pos, int numerocolunas){
     }
 };
 
+void checar_atributo(int atrbuid){
+    if(atrbuid<0 || atrbuid>=3){
+        fprintf(stderr, "Atributo inválido para comparacao.\n");
+        abort();
+    } 
+};

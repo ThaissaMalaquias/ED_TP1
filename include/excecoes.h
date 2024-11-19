@@ -11,5 +11,7 @@ void checar_abertura_arquivo(FILE* arquivo, char* nome_arq);
 //Checa se uma posicao é negativa ou maior que o numero de colunas.
 //void* é usado para não ter ambiguidades, já que ordind.c inclui excecoes.h.
 void checar_posicao(int pos, int numerocolunas);
+//chaca se o codigo é de um atributo válido para comparação.
+void checar_atributo(int atrbuid);
 
 #endif
