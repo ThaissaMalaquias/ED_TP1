@@ -14,3 +14,10 @@ void checar_abertura_arquivo(FILE* arquivo, char* nome_arq){
     }
 };
 
+void checar_posicao(int pos, int numerocolunas){
+    if(pos<0 || pos>=numerocolunas){
+        fprintf(stderr, "A posição fornecida do atributo e invalida.\n");
+        abort();
+    }
+};
+

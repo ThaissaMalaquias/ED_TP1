@@ -17,7 +17,9 @@ OrdInd_ptr Cria(){
     ord_ptr->num_linhas = 0;
     //num_colunas é iniciado com 1 para considerar o ultimo dado na logica de CarregaArquivo.
     ord_ptr->num_colunas = 1;
-    
+
+    ord_ptr->Indices = NULL;
+
     return ord_ptr;
 };
 
@@ -26,6 +28,7 @@ int Destroi (OrdInd_ptr poi){
     free(poi->Nomes);
     free(poi->CPFs);
     free(poi->Ends);
+    free(poi->Indices);
     free(poi);
     return 0;
 };
@@ -96,19 +99,61 @@ int CarregaArquivo(OrdInd_ptr poi, char * nomeentrada){
 };
 
 int NumAtributos(OrdInd_ptr poi){
-
+    return poi->num_colunas;
 };
 
-int NomeAtributo(OrdInd_ptr poi, int pos, char * nome){
-
+char* NomeAtributo(OrdInd_ptr poi, int pos, char * nome){
+    char* nome_colunas = {"Nome", "CPF", "Endereco", "Outros"};
+    //se a posicao é inválida
+    checar_posicao(pos, poi->num_colunas);
+    //Outros e Default para os demais atributos do aarquivo.
+    if(pos>=3) nome = nome_colunas[3];
+    else nome = nome_colunas[pos];
+    return nome;
 };
 
 int CriaIndice (OrdInd_ptr poi, int atribid){
+    //se a posicao e invalida.
+    checar_posicao(atribid, poi->num_colunas);
+
+    //se  Indices ainda esta no estagio inicial de nao apontar para
+    //nenhuma posicao valida da memoria.
+    if(poi->Indices==NULL){
+        //aloca e inicializa.
+        poi->Indices = (int**) malloc(poi->num_colunas*sizeof(int*));
+        checar_alocacao(poi->Indices, "Indices para cada Atributo");
+
+        for(int i=0; i<poi->num_colunas; i++){
+            poi->Indices[i] = NULL;
+        }
+    }
+    
+    //se o vetor de indices daquele atributo especifico já aponta para alguma
+    //posicao da memoria, é liberado para ser realocado.
+    if(poi->Indices[atribid]!=NULL){
+        free(poi->Indices[atribid]);
+    }
+
+    //alocacao para o vetor de indices de um atributo especifico.
+    poi->Indices[atribid] = (int *) malloc(poi->num_linhas*sizeof(int));
+    checar_alocacao(poi->Indices[atribid], "Indices de um atributo especifico");
+
+    //inicialização dos indices de um atributo especifico.
+    for(int i=0; i<poi->num_linhas; i++){
+        poi->Indices[atribid] [i] = i;
+    }
+};
+
+int OrdenaIndice_QuickSort(OrdInd_ptr poi, int atribid){
 
 };
 
-int OrdenaIndice (OrdInd_ptr poi, int atribid){
+int OrdenaIndice_InsertionSort(OrdInd_ptr poi, int atribuid){
 
+};
+
+int OrdenaIndice_MergeSort(OrdInd_ptr poi, int atribuid){
+    
 };
 
 int ImprimeOrdenadoIndice (OrdInd_ptr poi, int atribid){
