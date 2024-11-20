@@ -321,5 +321,22 @@ int OrdenaIndice_MergeSort(OrdInd_ptr poi, int atribid){
 };
 
 int ImprimeOrdenadoIndice (OrdInd_ptr poi, int atribid){
+    checar_atributo(atribid);
+    checar_alocacao(poi->Indices, "Vetor de Indices para cada atributo");
+    checar_alocacao(poi->Indices[atribid], "Vetor de Indices para atributo especifico");
 
+    int* ind_espec = poi->Indices[atribid];
+
+    char* atributo = NULL;
+    NomeAtributo(poi,atribid,atributo);
+    printf("Dados ordenados pelo atributo %s", atributo);
+    printf("%s, %s, %s", "Nome", "CPF", "Endereco");
+
+    int ind = 0;
+    for(int i = 0; i < poi->num_linhas; i++){
+        ind = ind_espec[i];
+        printf("%s, %d, %s\n", poi->Nomes[ind], poi->CPFs[ind], poi->Ends[ind]);
+    }
+
+    return 0;
 };

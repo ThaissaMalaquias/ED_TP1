@@ -17,4 +17,19 @@ int main(){
 
     Destroi(ord_main);
     */
+
+    char aux[100];
+    OrdInd_ptr poi = Cria();
+    CarregaArquivo(poi,"entrada.xcsv");
+    int numatrib = NumAtributos(poi);
+    for (int i = 0; i<numatrib; i++){
+        if (NomeAtributo(poi,i,aux)>0){
+            if (!strcmp(aux,"Nome")||!strcmp(aux,"CPF")||!strcmp(aux,"End")){
+                CriaIndice(poi,i);
+                OrdenaIndice_QuickSort(poi,i);
+                ImprimeOrdenadoIndice (poi,i);
+            }
+        }
+    }
+    Destroi(poi);
 }
