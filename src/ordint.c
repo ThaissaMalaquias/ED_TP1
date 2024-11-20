@@ -148,13 +148,14 @@ int Comparacao_Elementos(OrdInd_ptr poi, int thanku, int next, int atribid){
 
     checar_atributo(atribid);
 
+    //Para 'strings' e inteiros, o modo como a comparação é feita deve ser distinta.
     switch (atribid)
     {
     case 0:
         return strcmp(poi->Nomes[thanku], poi->Nomes[next]);
         break;
     case 1:
-        return poi->CPFs[thanku] - poi->CPFs[next];
+        return (poi->CPFs[thanku] - poi->CPFs[next]);
         break;
     case 2:
         return strcmp(poi->Ends[thanku], poi->Ends[next]);
@@ -206,20 +207,117 @@ int QuickSort_rec(OrdInd_ptr poi, int esq, int dir, int atribid){
 };
 
 int OrdenaIndice_QuickSort(OrdInd_ptr poi, int atribid){
+    //checa de o vetor de indices já está alocado e inicilizado.
     checar_alocacao(poi->Indices, "Vetor de Indices para cada atributo nao alocado.");
     checar_alocacao(poi->Indices[atribid], "Vetor de Indices para atributo especifico nao alocado.");
 
+    //começa a ordenacao dos dados.
     QuickSort_rec(poi, 0, poi->num_linhas-1, atribid);
     
     return 0;
 };
 
-int OrdenaIndice_InsertionSort(OrdInd_ptr poi, int atribid){
+int OrdenaIndice_Selecao(OrdInd_ptr poi, int atribid){
+    checar_atributo(atribid);
 
+    //obtendo o vetor de indices de um atributo especifico.
+    int* ind_espec = poi->Indices[atribid];
+    int aux = 0;
+
+    //percorrendo do fim para o inicio
+    for(int i = poi->num_linhas - 1; i>0; i--){
+        int max_elem = 0;
+        
+        //percorrendo o subetor nao ordenado.
+        for(int j = 0; j<i; j++){
+            if(Comparacao_Elementos(poi,ind_espec[j],ind_espec[max_elem],atribid)>0){
+                max_elem = j;
+            }
+        }
+
+        //troca o maior elemento com o ultimo.
+        if(max_elem!=i){
+            aux = ind_espec[i];
+            ind_espec[i] = ind_espec[max_elem];
+            ind_espec[max_elem] = aux;
+        }
+    }
+
+    return 0;
+};
+
+void Merge(int* ind_espec,int esq,int meio,int dir,OrdInd_ptr poi,int atribid){
+    //Mede a quantidade de elementos em cada metade.
+    int quant_esq = (meio - esq) + 1;
+    int quant_dir = meio + dir;
+
+    //criando e alocando vetores temporarios.
+    int* E = malloc(quant_esq * sizeof(int));
+    checar_alocacao(E, "Merge - Vetor temporario esquerda");
+    int* D = malloc(quant_dir * sizeof(int));
+    checar_alocacao(D, "Merge - Vetor Temporario direita");
+
+    //inicializando os vetores temporarios com os indices do atributo especifico.
+    for(int i = 0; i < quant_esq; i++){
+        E[i] = ind_espec[esq + i];
+    }
+    for(int j = 0; j < quant_dir; j++){
+        D[j] = ind_espec[meio + 1 + j];
+    }
+
+    int i = 0, j = 0, k = esq;
+
+    //copiando os índices de volta ordenados.
+    //termina quando pelo meno um dos vetores já teve seus elementos copiados para ind_espec. 
+    while((i < quant_esq) && (j < quant_dir)){
+        if(Comparacao_Elementos(poi, E[i], D[j], atribid) <= 0){
+            ind_espec[k] = E[i];
+            i++;
+     
+        }
+        else{
+            ind_espec[k] = D[i];
+            j++;
+        }
+        k++;
+    }
+
+    //copiando os possíveis elementos que restaram em um dos vetores temporários.
+    while(i < quant_esq){
+        ind_espec[k] = E[i];
+        i++;
+        k++;
+    }
+    while (j < quant_dir){
+        ind_espec[k] = D[j];
+        j++;
+        k++;
+    }
+
+    free(E);
+    free(D);
+};
+
+void MergeSort_rec(OrdInd_ptr poi, int* ind_espec, int esq, int dir, int atribid){
+    if(esq < dir){
+        int meio = esq + (dir-esq)/2;
+
+        //ordenando a primeira metade
+        MergeSort_rec(poi, ind_espec, esq, meio, atribid);
+        //ordenando a segunda metade
+        MergeSort_rec(poi, ind_espec, meio+1, dir, atribid);
+
+        Merge(ind_espec, esq, meio, dir, poi, atribid);
+    }
 };
 
 int OrdenaIndice_MergeSort(OrdInd_ptr poi, int atribid){
+    checar_atributo(atribid);
 
+    int* ind_espec = poi->Indices[atribid];
+    int n = poi->num_linhas;
+    
+    MergeSort_rec(poi,ind_espec,0,n-1,atribid);
 };
 
 int ImprimeOrdenadoIndice (OrdInd_ptr poi, int atribid){
