@@ -259,7 +259,7 @@ int OrdenaIndice_Selecao(OrdInd_ptr poi, int atribid){
 void Merge(int* ind_espec,int esq,int meio,int dir,OrdInd_ptr poi,int atribid){
     //Mede a quantidade de elementos em cada metade.
     int quant_esq = (meio - esq) + 1;
-    int quant_dir = meio + dir;
+    int quant_dir = dir - meio;
 
     //criando e alocando vetores temporários.
     int* E = malloc(quant_esq * sizeof(int));
@@ -283,10 +283,9 @@ void Merge(int* ind_espec,int esq,int meio,int dir,OrdInd_ptr poi,int atribid){
         if(Comparacao_Elementos(poi, E[i], D[j], atribid) <= 0){
             ind_espec[k] = E[i];
             i++;
-     
         }
         else{
-            ind_espec[k] = D[i];
+            ind_espec[k] = D[j];
             j++;
         }
         k++;
