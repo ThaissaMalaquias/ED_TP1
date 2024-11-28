@@ -277,6 +277,9 @@ void Merge(int* ind_espec,int esq,int meio,int dir,OrdInd_ptr poi,int atribid){
 
     int i = 0, j = 0, k = esq;
 
+    /*melhoria no merge sort: parar se o vetor já está ordenado, ou seja:
+    se o último elemento da primeira metade é menor igual ao da segunda metade.*/
+    if((Comparacao_Elementos(poi, ind_espec[meio],ind_espec[meio+1], atribid))>0){    
     /*copiando os índices de volta, ordenados.
     termina quando pelo menos um dos vetores já teve seus elementos copiados para ind_espec.*/
     while((i < quant_esq) && (j < quant_dir)){
@@ -302,6 +305,7 @@ void Merge(int* ind_espec,int esq,int meio,int dir,OrdInd_ptr poi,int atribid){
         j++;
         k++;
     }
+    }
 
     free(E);
     free(D);
@@ -310,10 +314,10 @@ void Merge(int* ind_espec,int esq,int meio,int dir,OrdInd_ptr poi,int atribid){
 void MergeSort_rec(OrdInd_ptr poi, int* ind_espec, int esq, int dir, int atribid){
     if(esq < dir){
         int meio = esq + (dir-esq)/2; //evita overflow. 
-
-        //ordenando a primeira metade.
+    
+        //particionando a primeira metade.
         MergeSort_rec(poi, ind_espec, esq, meio, atribid);
-        //ordenando a segunda metade.
+        //particionando a segunda metade.
         MergeSort_rec(poi, ind_espec, meio+1, dir, atribid);
 
         //junta tudo ordenando.
@@ -340,11 +344,11 @@ int ImprimeOrdenadoIndice (OrdInd_ptr poi, int atribid){
     char* atributo = (char*) malloc(40*sizeof(char));
     checar_alocacao(atributo, "Ponteiro para o nome do atributo.");
     NomeAtributo(poi,atribid,atributo);
-    printf("Dados ordenados pelo atributo %s", atributo);
+    printf("Dados ordenados pelo atributo %s\n", atributo);
     printf("%s, %s, %s\n", "Nome", "CPF", "Endereco");
 
     int ind = 0;
-    for(int i = 0; i < poi->num_registros; i++){
+    for(int i = 0; i < 20/*poi->num_registros*/; i++){
         ind = ind_espec[i];
         printf("%s, %s, %s\n", poi->Nomes[ind], poi->CPFs[ind], poi->Ends[ind]);
     }
