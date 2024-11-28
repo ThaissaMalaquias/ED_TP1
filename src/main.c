@@ -26,7 +26,7 @@ int main(){
         if (NomeAtributo(poi,i,aux)>0){
             if (!strcmp(aux,"Nome")||!strcmp(aux,"CPF")||!strcmp(aux,"End")){
                 CriaIndice(poi,i);
-                OrdenaIndice_MergeSort(poi,i);
+                OrdenaIndice_QuickSort(poi,i);
                 ImprimeOrdenadoIndice (poi,i);
             }
         }

@@ -214,7 +214,7 @@ int Particao_QS(int esq, int dir, OrdInd_ptr poi, int atribid){
     int i = esq;
     int j = dir;
 
-    int aux = 0;
+    int temp = 0;
 
     while(i <= j){
         //comparando os elementos com o pivô até encontrar um elemento no local inapropriado. 
@@ -223,9 +223,9 @@ int Particao_QS(int esq, int dir, OrdInd_ptr poi, int atribid){
 
         //quando uma troca é necessária
         if(i <= j){
-            aux = inds_espec[i];
+            temp = inds_espec[i];
             inds_espec[i] = inds_espec[j];
-            inds_espec[j] = aux;
+            inds_espec[j] = temp;
             i++;
             j--;
         }
@@ -233,18 +233,18 @@ int Particao_QS(int esq, int dir, OrdInd_ptr poi, int atribid){
 
     //ponto de partição é retornado.
     return i;
-
 }
 
 int QuickSort_rec(OrdInd_ptr poi, int esq, int dir, int atribid){
     if(esq < dir){
         /*O meio vai ser o ponto de partição retornado pela função de particionamento*/
         int meio = Particao_QS(esq,dir,poi,atribid);
-
+        
         /* Ordenando as duas metades recursivamente de forma a fazer mais particionamentos até que 
         hajam apenas dois elementos ordenados entre si. neste ponto, a ordenação está completa.*/
         QuickSort_rec(poi, esq, meio-1, atribid);
         QuickSort_rec(poi,meio,dir,atribid);
+
     }
 
     return 0;
