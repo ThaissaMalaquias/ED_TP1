@@ -348,7 +348,7 @@ int ImprimeOrdenadoIndice (OrdInd_ptr poi, int atribid){
     printf("%s, %s, %s\n", "Nome", "CPF", "Endereco");
 
     int ind = 0;
-    for(int i = 0; i < 20/*poi->num_registros*/; i++){
+    for(int i = 0; i < poi->num_registros; i++){
         ind = ind_espec[i];
         printf("%s, %s, %s\n", poi->Nomes[ind], poi->CPFs[ind], poi->Ends[ind]);
     }
