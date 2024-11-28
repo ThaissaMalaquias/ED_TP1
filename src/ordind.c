@@ -41,7 +41,7 @@ int CarregaArquivo(OrdInd_ptr poi, char * nomeentrada){
     char* linha = malloc(8192*sizeof(char));
     checar_alocacao(linha, "Linha para Leitura de Arquivo");
     
-    //pegar o numero de atributos
+    //pegar o número de atributos
     if(fgets(linha, 8192, arquivo)){
         poi->num_atributos = atoi(linha);
     }
@@ -51,11 +51,12 @@ int CarregaArquivo(OrdInd_ptr poi, char * nomeentrada){
         fgets(linha, 8192, arquivo);
     }
 
-    //pegar o numero de registros
+    //pegar o número de registros
     int num_registros = 0;
     if(fgets(linha, 8192, arquivo)){
         num_registros = atoi(linha);
     }
+    poi->num_registros = num_registros;
 
     //pegar o número de caracteres de payload
     int num_outros = 0;
@@ -66,7 +67,6 @@ int CarregaArquivo(OrdInd_ptr poi, char * nomeentrada){
         num_outros = atoi(token);
     }
 
-    //ponteiro para ponteiro, ponteiro para strings.
     //alocação para os dados.
     poi->Nomes = (char**) malloc(num_registros*sizeof(char*));
     checar_alocacao(poi->Nomes, "Nomes");
@@ -77,6 +77,7 @@ int CarregaArquivo(OrdInd_ptr poi, char * nomeentrada){
     poi->Outros = (char**) malloc(num_registros*sizeof(char*));
     checar_alocacao(poi->Outros, "Outros");
 
+    //copiando os dados para a estrutura.
     int reg = 0;
     while(fgets(linha, 8192, arquivo) && reg < num_registros){
         char* nome = strtok(linha, ",");
@@ -116,13 +117,15 @@ int NomeAtributo(OrdInd_ptr poi, int pos, char* nome){
         strcpy(nome, "CPF");
         break;
     case 2:
-        strcpy(nome, "Endereço");
+        strcpy(nome, "End");
         break;
     default:
         strcpy(nome, "Outros");
         break;
     }
     
+    /*precisa retornar um valor maior que 0, segundo o main dado pelo enunciado.
+    checar_codigo_atributo sempre garante a validade do atributo.*/
     return 1;
 }
 
@@ -179,8 +182,8 @@ int Particao_QS(int esq, int dir, OrdInd_ptr poi, int atribid){
 
     while(i <= j){
         //comparando os elementos com o pivô até encontrar um elemento no local inapropriado. 
-        while(Comparacao_Elementos(poi, inds_espec[i], pivo, atribid) < 0) i++;
-        while(Comparacao_Elementos(poi, inds_espec[j], pivo, atribid) > 0) j--;
+        while((Comparacao_Elementos(poi, inds_espec[i], pivo, atribid)) < 0) i++;
+        while((Comparacao_Elementos(poi, inds_espec[j], pivo, atribid)) > 0) j--;
 
         //quando uma troca é necessária
         if(i <= j){
@@ -219,7 +222,7 @@ int OrdenaIndice_QuickSort(OrdInd_ptr poi, int atribid){
     checar_alocacao(poi->Indices[atribid], "Vetor de Indices para atributo especifico nao alocado.");
 
     //começa a ordenação dos dados.
-    QuickSort_rec(poi, 0, poi->num_registros-1, atribid);
+    QuickSort_rec(poi, 0, (poi->num_registros)-1, atribid);
     
     return 0;
 }
@@ -335,10 +338,11 @@ int ImprimeOrdenadoIndice (OrdInd_ptr poi, int atribid){
 
     int* ind_espec = poi->Indices[atribid];
 
-    char* atributo = NULL;
+    char* atributo = (char*) malloc(40*sizeof(char));
+    checar_alocacao(atributo, "Ponteiro para o nome do atributo.");
     NomeAtributo(poi,atribid,atributo);
     printf("Dados ordenados pelo atributo %s", atributo);
-    printf("%s, %s, %s", "Nome", "CPF", "Endereco");
+    printf("%s, %s, %s\n", "Nome", "CPF", "Endereco");
 
     int ind = 0;
     for(int i = 0; i < poi->num_registros; i++){
@@ -346,5 +350,6 @@ int ImprimeOrdenadoIndice (OrdInd_ptr poi, int atribid){
         printf("%s, %s, %s\n", poi->Nomes[ind], poi->CPFs[ind], poi->Ends[ind]);
     }
 
+    free(atributo);
     return 0;
 }
