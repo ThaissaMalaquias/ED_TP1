@@ -35,11 +35,14 @@ int NomeAtributo(OrdInd_ptr poi, int pos, char* nome);
 int CriaIndice (OrdInd_ptr poi, int atribid);
 //Compara apenas 2 elementos. Para maior escala, deve ser chamada em loop.
 int Comparacao_Elementos(OrdInd_ptr poi, int thanku, int next, int atribid);
-//Função para o particionamento do vetor de entrada.
+/*Função para o particionamento do vetor de entrada. Uma melhoria do algoritmo
+clássico aplicada aqui é a escolha do pivô por meio da mediana de três.*/
 int Particao_QS(int esq, int dir, OrdInd_ptr poi, int atribid);
 //Função Recursiva do QuickSOrt.
 int QuickSort_rec(OrdInd_ptr poi, int esq, int dir, int atribid);
-//Função geral do QuickSort.
+/*Função geral do QuickSort. Para melhorá-lo, o algoritmo de seleção é usado para 
+partições menores, pois assim como o Quicksort, ele não é estável. Além disso, é utilizado
+mediana de três para a escolha do pivô em Partição_QS*/
 int OrdenaIndice_QuickSort(OrdInd_ptr poi, int atribid);
 /*Selecao aplicado do final para o inicio, ou seja:
 Seleciona o maior elemento e troca com o último.*/
@@ -52,5 +55,11 @@ void MergeSort_rec(OrdInd_ptr poi, int* ind_espec, int esq, int dir, int atribid
 int OrdenaIndice_MergeSort(OrdInd_ptr poi, int atribid);
 //Impressão dos dados ordenados começando pelo atributo associado ao código dado.
 int ImprimeOrdenadoIndice (OrdInd_ptr poi, int atribid);
+
+//Funções de Melhoria
+/* Por ser estável, InsertionSort será utilizado junto com o Merge, 
+que também é estável. */
+int OrdenaIndice_Insercao(OrdInd_ptr poi, int atribid);
+
 
 #endif

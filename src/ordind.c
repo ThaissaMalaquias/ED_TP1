@@ -173,8 +173,44 @@ int Comparacao_Elementos(OrdInd_ptr poi, int thanku, int next, int atribid){
 int Particao_QS(int esq, int dir, OrdInd_ptr poi, int atribid){
     //indices relacionados ao atributo específico.
     int* inds_espec = poi->Indices[atribid];
-    //elemento do meio é o pivô.
-    int pivo = inds_espec[(esq+dir)/2];
+
+    /*Aplicando a mediana de três para a escolha do pivô.
+    o primeiro, o último e o elemento do meio são comparados de forma
+    que sejam ordenados crescentemente, obtendo a mediana no meio.*/
+    
+    //pegando o primeiro, último e o elemento do meio.
+    int meio = (esq+dir) / 2;
+    int primeiro = esq;
+    int ultimo = dir;
+
+    int a = inds_espec[primeiro];
+    int b = inds_espec[meio];
+    int c = inds_espec[ultimo];
+
+    int aux = 0;
+    //comparando e trocando de forma a obter o  no meio.
+    if((Comparacao_Elementos(poi,a,b,atribid))>0){
+        aux = a;
+        a = b;
+        b = aux;
+    }
+    else if((Comparacao_Elementos(poi,a,c,atribid))>0){
+        aux = a;
+        a = c;
+        c = aux;
+    }
+    else if((Comparacao_Elementos(poi,b,c,atribid))>0){
+        aux = b;
+        b = c;
+        c = aux;
+    }
+    
+    int pivo = b;
+    inds_espec[meio] = pivo;
+
+    //após escolha do pivô
+
+    //inicializando os indices de partição
     int i = esq;
     int j = dir;
 
@@ -202,9 +238,7 @@ int Particao_QS(int esq, int dir, OrdInd_ptr poi, int atribid){
 
 int QuickSort_rec(OrdInd_ptr poi, int esq, int dir, int atribid){
     if(esq < dir){
-        /*O meio vai ser o ponto de partição retornado pela função de particionamento,
-        que já coloca os valores em seus devidos lugares de acordo com uma primeira 
-        iteração do Algoritmo QuickSort.*/
+        /*O meio vai ser o ponto de partição retornado pela função de particionamento*/
         int meio = Particao_QS(esq,dir,poi,atribid);
 
         /* Ordenando as duas metades recursivamente de forma a fazer mais particionamentos até que 
@@ -356,3 +390,4 @@ int ImprimeOrdenadoIndice (OrdInd_ptr poi, int atribid){
     free(atributo);
     return 0;
 }
+
