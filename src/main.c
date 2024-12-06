@@ -1,26 +1,11 @@
 #include "../include/ordind.h"
 
-int main(){
-    /*OrdInd_ptr ord_main;
+int main(int argc, char** argv){
 
-    ord_main = Cria();
-
-    CarregaArquivo(ord_main, "dados.csv");
-
-    for(int i = 0; i < ord_main->num_registros; i++){
-        printf("\n Nome: %s, Cpf: %d, Endereco: %s \n", 
-                ord_main->Nomes[i], ord_main->CPFs[i], ord_main->Ends[i] );
-    }
-
-    printf("\nnumero de linhas: %d \n", ord_main->num_registros);
-    printf("\nnumero de colunas: %d \n", ord_main->num_atributos);
-
-    Destroi(ord_main);
-    */
-
+    char* nome_arq = argv[1];
     char aux[100] = "";
     OrdInd_ptr poi = Cria();
-    CarregaArquivo(poi,"cad/cad.r1000.p5000.xcsv");
+    CarregaArquivo(poi,nome_arq);
     int numatrib = NumAtributos(poi);
     for (int i = 0; i<numatrib; i++){
         if (NomeAtributo(poi,i,aux)>0){

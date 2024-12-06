@@ -4,7 +4,9 @@ BIN=./bin
 OBJ=./obj
 SRC=./src
 INC=./include
-TARGET=tp1_exec
+TARGET=tp1.out
+
+FILE?=arquivo.xcsv
 
 all: ${BIN}/${TARGET}
 
@@ -21,13 +23,13 @@ ${OBJ}/main.o: ${SRC}/main.c
 	${CC} ${CFLAGS} -I ${INC}/ -c ${SRC}/main.c -o ${OBJ}/main.o
 
 run: all
-	${BIN}/${TARGET}
+	${BIN}/${TARGET} ${FILE}
 
 valg: all
-	valgrind -q ${BIN}/${TARGET}
+	valgrind -q ${BIN}/${TARGET} ${FILE}
 
 gdb: all
-	gdb ${BIN}/${TARGET}
+	gdb --args ${BIN}/${TARGET} ${FILE}
 
 clean:
-	rm -f ${OBJ}/*.o ${BIN}/tp1_exec
+	rm -f ${OBJ}/*.o ${BIN}/${TARGET}

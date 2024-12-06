@@ -33,7 +33,8 @@ int NumAtributos(OrdInd_ptr poi);
 int NomeAtributo(OrdInd_ptr poi, int pos, char* nome);
 //Aloca e inicializa o vetor de índices para o atributo específico.
 int CriaIndice (OrdInd_ptr poi, int atribid);
-//Compara apenas 2 elementos. Para maior escala, deve ser chamada em loop.
+/*Compara 2 elementos de um atributo a partir de indices de referencia. 
+Para maior escala, deve ser chamada em loop.*/
 int Comparacao_Elementos(OrdInd_ptr poi, int thanku, int next, int atribid);
 /*Função para o particionamento do vetor de entrada. Uma melhoria para o algoritmo
 clássico aplicada aqui é a escolha do pivô por meio da mediana de três.*/
