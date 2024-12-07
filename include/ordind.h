@@ -38,7 +38,7 @@ int NomeAtributo(OrdInd_ptr poi, int pos, char* nome);
 int CriaIndice (OrdInd_ptr poi, int atribid);
 /*Compara 2 elementos de um atributo a partir de indices de referencia. 
 Para maior escala, deve ser chamada em loop.*/
-int Comparacao_Elementos(OrdInd_ptr poi, int thanku, int next, int atribid);
+int Comparacao_Elementos(OrdInd_ptr poi, int thanku, int next, int atribid/*, char** file_mem_access*/);
 /*Função para o particionamento do vetor de entrada. Uma melhoria para o algoritmo
 clássico aplicada aqui é a escolha do pivô por meio da mediana de três.*/
 int Particao_QS(int esq, int dir, OrdInd_ptr poi, int atribid);
@@ -58,6 +58,6 @@ void MergeSort_rec(OrdInd_ptr poi, int* ind_espec, int esq, int dir, int atribid
 //Funcao Geral do MergeSort.
 int OrdenaIndice_MergeSort(OrdInd_ptr poi, int atribid);
 //Impressão dos dados ordenados começando pelo atributo associado ao código dado.
-int ImprimeOrdenadoIndice (OrdInd_ptr poi, int atribid);
+int ImprimeOrdenadoIndice (OrdInd_ptr poi, int atribid/*, char* file_mem_access*/);
 
 #endif

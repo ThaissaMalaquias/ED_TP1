@@ -75,3 +75,13 @@ int CarregaArquivo(OrdInd_ptr poi, char * nomeentrada){
 
     return 0;
 }
+
+void log_mem_access(const char* filename, clock_t time, void* addr) {
+    FILE* file = fopen(filename, "a");
+    if (!file) {
+        perror("Erro ao abrir arquivo de log");
+        return;
+    }
+    fprintf(file, "%ld,%p\n", time, addr);
+    fclose(file);
+}

@@ -6,7 +6,7 @@ SRC=./src
 INC=./include
 TARGET=tp1.out
 
-FILE?=arquivo.xcsv
+FILE?=./cad/cad.r10.p1000.xcsv
 
 all: ${BIN}/${TARGET}
 

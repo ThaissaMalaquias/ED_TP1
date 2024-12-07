@@ -14,7 +14,7 @@ int main(int argc, char** argv){
             if (!strcmp(aux,"Nome")||!strcmp(aux,"CPF")||!strcmp(aux,"End")){
                 CriaIndice(poi,i);
                 OrdenaIndice_QuickSort(poi,i);
-                ImprimeOrdenadoIndice (poi,i);
+                ImprimeOrdenadoIndice (poi,i/*,"Q_mem_access.csv"*/);
             }
         }
     }
@@ -24,7 +24,7 @@ int main(int argc, char** argv){
             if (!strcmp(aux,"Nome")||!strcmp(aux,"CPF")||!strcmp(aux,"End")){
                 CriaIndice(poi,i);
                 OrdenaIndice_MergeSort(poi,i);
-                ImprimeOrdenadoIndice (poi,i);
+                ImprimeOrdenadoIndice (poi,i/*,"M_mem_access.csv"*/);
             }
         }
     }
@@ -35,7 +35,7 @@ int main(int argc, char** argv){
             if (!strcmp(aux,"Nome")||!strcmp(aux,"CPF")||!strcmp(aux,"End")){
                 CriaIndice(poi,i);
                 OrdenaIndice_Selecao(poi,i);
-                ImprimeOrdenadoIndice (poi,i);
+                ImprimeOrdenadoIndice (poi,i/*,"S_mem_access.csv"*/);
             }
         }
     }
