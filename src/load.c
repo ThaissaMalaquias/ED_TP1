@@ -34,6 +34,7 @@ int CarregaArquivo(OrdInd_ptr poi, char * nomeentrada){
     poi->num_registros = num_registros;
 
     //pegar o número de caracteres de payload
+    /*
     int num_outros = 0;
     char* nomeentrada_copia = strdup(nomeentrada);
     char* token = strtok(nomeentrada_copia,"p");
@@ -41,6 +42,7 @@ int CarregaArquivo(OrdInd_ptr poi, char * nomeentrada){
         token = strtok(NULL, ".");
         num_outros = atoi(token);
     }
+    */
 
     //alocação para os dados.
     poi->Nomes = (char**) malloc(num_registros*sizeof(char*));

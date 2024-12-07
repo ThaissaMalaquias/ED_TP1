@@ -8,6 +8,7 @@ int main(int argc, char** argv){
     OrdInd_ptr poi = Cria();
     CarregaArquivo(poi,nome_arq);
     int numatrib = NumAtributos(poi);
+
     for (int i = 0; i<numatrib; i++){
         if (NomeAtributo(poi,i,aux)>0){
             if (!strcmp(aux,"Nome")||!strcmp(aux,"CPF")||!strcmp(aux,"End")){
@@ -17,6 +18,7 @@ int main(int argc, char** argv){
             }
         }
     }
+    
     for (int i = 0; i<numatrib; i++){
         if (NomeAtributo(poi,i,aux)>0){
             if (!strcmp(aux,"Nome")||!strcmp(aux,"CPF")||!strcmp(aux,"End")){
@@ -26,6 +28,8 @@ int main(int argc, char** argv){
             }
         }
     }
+    
+    
     for (int i = 0; i<numatrib; i++){
         if (NomeAtributo(poi,i,aux)>0){
             if (!strcmp(aux,"Nome")||!strcmp(aux,"CPF")||!strcmp(aux,"End")){
@@ -35,5 +39,6 @@ int main(int argc, char** argv){
             }
         }
     }
+    
     Destroi(poi);
 }

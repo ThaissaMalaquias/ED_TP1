@@ -119,39 +119,30 @@ int Particao_QS(int esq, int dir, OrdInd_ptr poi, int atribid){
     
     //pegando o primeiro, último e o elemento do meio.
     int meio = (esq+dir) / 2;
-    int primeiro = esq;
-    int ultimo = dir;
     int pivo = meio;
-      
-    int a = inds_espec[primeiro];
-    int b = inds_espec[meio];
-    int c = inds_espec[ultimo];
 
     int aux = 0;
 
     //comparando e trocando de forma a obter o  no meio.
-    if((Comparacao_Elementos(poi,a,b,atribid))>0){
-        aux = a;
-        a = b;
-        b = aux;
+    if((Comparacao_Elementos(poi,inds_espec[esq],inds_espec[meio],atribid))>0){
+        aux = inds_espec[esq];
+        inds_espec[esq] = inds_espec[meio];
+        inds_espec[meio] = aux;
     }
-    if((Comparacao_Elementos(poi,a,c,atribid))>0){
-        aux = a;
-        a = c;
-        c = aux;
+    if((Comparacao_Elementos(poi,inds_espec[esq],inds_espec[dir],atribid))>0){
+        aux = inds_espec[esq];
+        inds_espec[esq] = inds_espec[dir];
+        inds_espec[dir] = aux;
     }
-    if((Comparacao_Elementos(poi,b,c,atribid))>0){
-        aux = b;
-        b = c;
-        c = aux;
+    if((Comparacao_Elementos(poi,inds_espec[meio],inds_espec[dir],atribid))>0){
+        aux = inds_espec[meio];
+        inds_espec[meio] = inds_espec[dir];
+        inds_espec[dir] = aux;
     }
                 
-    pivo = b;
+    pivo = inds_espec[meio];
 
-    //evita duplicatas.
-    int aux_ind = inds_espec[meio];
     inds_espec[meio] = pivo;
-    if(inds_espec[meio]==inds_espec[pivo]) inds_espec[pivo] = aux_ind;
 
     //após escolha do pivô
  
@@ -182,7 +173,7 @@ int Particao_QS(int esq, int dir, OrdInd_ptr poi, int atribid){
 
 int QuickSort_rec(OrdInd_ptr poi, int esq, int dir, int atribid){
 
-    if(esq < dir){
+    if((esq < dir)){
         /*O meio vai ser o ponto de partição retornado pela função de particionamento*/
         int meio = Particao_QS(esq,dir,poi,atribid);
         
