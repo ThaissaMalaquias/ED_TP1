@@ -1,4 +1,5 @@
 #include "../include/ordind.h"
+#include "../include/load.h"
 
 int main(int argc, char** argv){
 
@@ -12,6 +13,24 @@ int main(int argc, char** argv){
             if (!strcmp(aux,"Nome")||!strcmp(aux,"CPF")||!strcmp(aux,"End")){
                 CriaIndice(poi,i);
                 OrdenaIndice_QuickSort(poi,i);
+                ImprimeOrdenadoIndice (poi,i);
+            }
+        }
+    }
+    for (int i = 0; i<numatrib; i++){
+        if (NomeAtributo(poi,i,aux)>0){
+            if (!strcmp(aux,"Nome")||!strcmp(aux,"CPF")||!strcmp(aux,"End")){
+                CriaIndice(poi,i);
+                OrdenaIndice_MergeSort(poi,i);
+                ImprimeOrdenadoIndice (poi,i);
+            }
+        }
+    }
+    for (int i = 0; i<numatrib; i++){
+        if (NomeAtributo(poi,i,aux)>0){
+            if (!strcmp(aux,"Nome")||!strcmp(aux,"CPF")||!strcmp(aux,"End")){
+                CriaIndice(poi,i);
+                OrdenaIndice_Selecao(poi,i);
                 ImprimeOrdenadoIndice (poi,i);
             }
         }

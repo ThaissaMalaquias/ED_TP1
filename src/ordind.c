@@ -1,5 +1,5 @@
+
 #include "../include/ordind.h"
-#include "../include/excecoes.h"
 
 //Construtor
 OrdInd_ptr Cria(){
@@ -18,6 +18,7 @@ OrdInd_ptr Cria(){
     ord_ptr->num_atributos = 0;
 
     ord_ptr->Indices = NULL;
+    ord_ptr->Cabecalho = NULL;
 
     return ord_ptr;
 }
@@ -29,73 +30,8 @@ int Destroi (OrdInd_ptr poi){
     free(poi->Ends);
     free(poi->Outros);
     free(poi->Indices);
+    free(poi->Cabecalho);
     free(poi);
-    return 0;
-}
-
-//Carrega os dados para armazenar na estrutura.
-int CarregaArquivo(OrdInd_ptr poi, char * nomeentrada){
-    FILE* arquivo = fopen(nomeentrada, "r");
-    checar_abertura_arquivo(arquivo, nomeentrada);
-
-    char* linha = malloc(8192*sizeof(char));
-    checar_alocacao(linha, "Linha para Leitura de Arquivo");
-    
-    //pegar o número de atributos
-    if(fgets(linha, 8192, arquivo)){
-        poi->num_atributos = atoi(linha);
-    }
-
-    //Ignorando os dados de cabeçalho e etc.
-    for(int i=0; i < poi->num_atributos; i++){
-        fgets(linha, 8192, arquivo);
-    }
-
-    //pegar o número de registros
-    int num_registros = 0;
-    if(fgets(linha, 8192, arquivo)){
-        num_registros = atoi(linha);
-    }
-    poi->num_registros = num_registros;
-
-    //pegar o número de caracteres de payload
-    int num_outros = 0;
-    char* nomeentrada_copia = strdup(nomeentrada);
-    char* token = strtok(nomeentrada_copia,"p");
-    if(token!=NULL){
-        token = strtok(NULL, ".");
-        num_outros = atoi(token);
-    }
-
-    //alocação para os dados.
-    poi->Nomes = (char**) malloc(num_registros*sizeof(char*));
-    checar_alocacao(poi->Nomes, "Nomes");
-    poi->CPFs = (char**) malloc(num_registros*sizeof(char*));
-    checar_alocacao(poi->CPFs, "CPFs");
-    poi->Ends = (char**) malloc(num_registros*sizeof(char*));
-    checar_alocacao(poi->Ends, "Enderecos");
-    poi->Outros = (char**) malloc(num_registros*sizeof(char*));
-    checar_alocacao(poi->Outros, "Outros");
-
-    //copiando os dados para a estrutura.
-    int reg = 0;
-    while(fgets(linha, 8192, arquivo) && reg < num_registros){
-        char* nome = strtok(linha, ",");
-        char* cpf = strtok(NULL, ",");
-        char* end = strtok(NULL, ",");
-        char* otrs = strtok(NULL, "\n");
-
-        poi->Nomes[reg] = strdup(nome);
-        poi->CPFs[reg] = strdup(cpf);
-        poi->Ends[reg] = strdup(end);
-        poi->Outros[reg] = strdup(otrs);
-
-        reg++;
-    }
-
-    fclose(arquivo);
-    free(linha);
-
     return 0;
 }
 
@@ -148,6 +84,8 @@ int CriaIndice (OrdInd_ptr poi, int atribid){
     for(int i=0; i<poi->num_registros; i++){
         poi->Indices[atribid] [i] = i;
     }
+
+    return 0;
 }
 
 int Comparacao_Elementos(OrdInd_ptr poi, int thanku, int next, int atribid){
@@ -166,6 +104,7 @@ int Comparacao_Elementos(OrdInd_ptr poi, int thanku, int next, int atribid){
         return strcmp(poi->Ends[thanku], poi->Ends[next]);
         break;
     default:
+        return -1;
         break;
     }
 }
@@ -182,34 +121,40 @@ int Particao_QS(int esq, int dir, OrdInd_ptr poi, int atribid){
     int meio = (esq+dir) / 2;
     int primeiro = esq;
     int ultimo = dir;
-
+    int pivo = meio;
+      
     int a = inds_espec[primeiro];
     int b = inds_espec[meio];
     int c = inds_espec[ultimo];
 
     int aux = 0;
+
     //comparando e trocando de forma a obter o  no meio.
     if((Comparacao_Elementos(poi,a,b,atribid))>0){
         aux = a;
         a = b;
         b = aux;
     }
-    else if((Comparacao_Elementos(poi,a,c,atribid))>0){
+    if((Comparacao_Elementos(poi,a,c,atribid))>0){
         aux = a;
         a = c;
         c = aux;
     }
-    else if((Comparacao_Elementos(poi,b,c,atribid))>0){
+    if((Comparacao_Elementos(poi,b,c,atribid))>0){
         aux = b;
         b = c;
         c = aux;
     }
-    
-    int pivo = b;
+                
+    pivo = b;
+
+    //evita duplicatas.
+    int aux_ind = inds_espec[meio];
     inds_espec[meio] = pivo;
+    if(inds_espec[meio]==inds_espec[pivo]) inds_espec[pivo] = aux_ind;
 
     //após escolha do pivô
-
+ 
     //inicializando os indices de partição
     int i = esq;
     int j = dir;
@@ -236,6 +181,7 @@ int Particao_QS(int esq, int dir, OrdInd_ptr poi, int atribid){
 }
 
 int QuickSort_rec(OrdInd_ptr poi, int esq, int dir, int atribid){
+
     if(esq < dir){
         /*O meio vai ser o ponto de partição retornado pela função de particionamento*/
         int meio = Particao_QS(esq,dir,poi,atribid);
@@ -257,7 +203,7 @@ int OrdenaIndice_QuickSort(OrdInd_ptr poi, int atribid){
 
     //começa a ordenação dos dados.
     QuickSort_rec(poi, 0, (poi->num_registros)-1, atribid);
-    
+
     return 0;
 }
 
@@ -366,6 +312,8 @@ int OrdenaIndice_MergeSort(OrdInd_ptr poi, int atribid){
     int n = poi->num_registros;
     
     MergeSort_rec(poi,ind_espec,0,n-1,atribid);
+
+    return 0;
 }
 
 int ImprimeOrdenadoIndice (OrdInd_ptr poi, int atribid){
@@ -375,19 +323,16 @@ int ImprimeOrdenadoIndice (OrdInd_ptr poi, int atribid){
 
     int* ind_espec = poi->Indices[atribid];
 
-    char* atributo = (char*) malloc(40*sizeof(char));
-    checar_alocacao(atributo, "Ponteiro para o nome do atributo.");
-    NomeAtributo(poi,atribid,atributo);
-    printf("Dados ordenados pelo atributo %s\n", atributo);
-    printf("%s, %s, %s\n", "Nome", "CPF", "Endereco");
+    for(int i = 0; i!=6; i++){
+        printf("%s", poi->Cabecalho[i]);
+    }
 
     int ind = 0;
     for(int i = 0; i < poi->num_registros; i++){
         ind = ind_espec[i];
-        printf("%s, %s, %s\n", poi->Nomes[ind], poi->CPFs[ind], poi->Ends[ind]);
+        printf("%s,%s,%s,%s\n", poi->Nomes[ind], poi->CPFs[ind], poi->Ends[ind], poi->Outros[ind]);
     }
 
-    free(atributo);
     return 0;
 }
 

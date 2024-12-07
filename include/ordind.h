@@ -5,6 +5,8 @@
 #include <stdlib.h>
 #include <string.h>
 
+#include "../include/excecoes.h"
+
 typedef struct OrdInd{
     //quantidade de dados
     int num_registros;
@@ -17,6 +19,9 @@ typedef struct OrdInd{
     char** Outros;
     //vetor de indices, para cada um dos atributos
     int **Indices;
+
+    //para armazenar o cabeçalho do arquivo com os dados
+    char** Cabecalho;
 } OrdInd_t, *OrdInd_ptr;
 
 //Funções dadas pelo enunciado do TP
@@ -25,8 +30,6 @@ typedef struct OrdInd{
 OrdInd_ptr Cria();
 //Destrutor da estrutura.
 int Destroi (OrdInd_ptr poi);
-//Carrega os dados e armazena de acordo com a estrutura.
-int CarregaArquivo(OrdInd_ptr poi, char * nomeentrada);
 //Retorna o numero de atributos dos registros.
 int NumAtributos(OrdInd_ptr poi);
 //Retorna o nome do atributo ao qual o codigo indicado por pos está relacionado.

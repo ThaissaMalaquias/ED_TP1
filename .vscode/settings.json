@@ -3,6 +3,7 @@
         "ordint.h": "c",
         "excecoes.h": "c",
         "stdio.h": "c",
-        "ordind.h": "c"
+        "ordind.h": "c",
+        "string.h": "c"
     }
 }
